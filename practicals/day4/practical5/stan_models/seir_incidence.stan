@@ -44,7 +44,7 @@ transformed parameters{
   
   y = ode_rk45(seir, y0, t0, t, beta, sigma, gamma, N);
   
-  incidence[i] = y[1, 5] - 0;
+  incidence[1] = y[1, 5] - 0;
   for (i in 2:n_days)
     incidence[i] = y[i, 5] - y[i-1, 5];
 }
