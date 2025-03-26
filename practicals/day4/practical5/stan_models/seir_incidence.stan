@@ -17,6 +17,7 @@ functions {
       dydt[2] = beta * I * S / N - gamma * E;
       dydt[3] =  gamma * E - sigma * I;
       dydt[4] =  sigma * I;
+      dydt[5] = gamma * E
       
       return dydt;
   }
@@ -43,15 +44,16 @@ transformed parameters{
   
   y = ode_rk45(seir, y0, t0, t, beta, sigma, gamma, N);
   
-  for (i in 1:n_days)
-    incidence[i] = gamma * y[i, 2];
+  incidence[i] = y[1, 5] - 0
+  for (i in 2:n_days)
+    incidence[i] = y[i, 5] - y[i-1, 5];
 }
 model {
     //priors
     beta ~ normal(4, 2); //truncated at 0
     sigma ~ normal(0.8, 0.3); //truncated at 0
     gamma ~ normal(1.0, 0.25);
-    phi_inv ~ exponential(0.0001);
+    phi_inv ~ exponential(5);
     
     //sampling distribution
     cases ~ neg_binomial_2(incidence, phi);
